@@ -1,0 +1,39 @@
+name: adnipy-dev
+channels:
+  - defaults
+dependencies:
+  # required
+  - python
+  - pip
+
+  # code checks
+  - flake8
+
+  # documentation
+  - sphinx=1.8.5
+  - numpydoc
+
+  # testing
+  - pytest
+  - pytest-cov
+  - coverage
+
+  # requirements
+  - pandas
+  - matplotlib
+
+  # distribution
+  - twine
+
+  # pypi packages
+  - pip:
+    # documentation
+    - sphinx-rtd-theme
+    - watchdog
+
+    # testing
+    - tox
+    - tox-conda
+
+    # distribution
+    - bumpversion
