@@ -9,6 +9,9 @@ dependencies:
   # code checks
   - flake8
 
+  # code formatting
+  - black
+
   # documentation
   - sphinx=1.8.5
   - numpydoc
