@@ -95,7 +95,7 @@ def standard_column_names(dataframe):
     1    100002
 
     """
-    mapper = {
+    MAPPER = {
         # Collections
         "Image": "Image ID",
         "Image Data ID": "Image ID",
@@ -107,11 +107,14 @@ def standard_column_names(dataframe):
         "ASSAYTIME": "TAUTIME",
     }
 
-    dataframe = dataframe.rename(mapper=mapper, axis="columns")
+    dataframe = dataframe.rename(mapper=MAPPER, axis="columns")
 
     if "VISCODE2" in dataframe.columns:
         dataframe["VISCODE"] = dataframe["VISCODE2"]
         del dataframe["VISCODE2"]
+
+    else: 
+        print('"VISCODE2" not included.')
 
     dataframe = rid(dataframe)
 
@@ -132,7 +135,7 @@ def standard_dates(dataset):
         Dates will have the appropriate dtype.
 
     """
-    dates = [
+    DATES = [
         # Collections
         "Acq Date",
         "Downloaded",
@@ -157,7 +160,7 @@ def standard_dates(dataset):
         "update_stamp",
     ]
 
-    for date in set(dates):
+    for date in DATES:
         if date in dataset.columns:
             dataset.loc[:, date] = pd.to_datetime(dataset.loc[:, date])
 
@@ -340,9 +343,9 @@ def timepoints(df, second="first"):
     """
     index = ["Subject ID", "Image ID"]
 
-    df = df.reset_index()
-    df = df.set_index(index)
-    df = df.sort_index()
+    df.reset_index(inplace=True)
+    df.set_index(index, inplace=True)
+    df.sort_index(inplace=True)
     if "index" in df.columns:
         df = df.drop(columns="index")
     if "Description" in df.columns:
