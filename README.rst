@@ -3,6 +3,15 @@ adnipy
 ======
 
 
+.. image:: https://travis-ci.org/mcsitter/adnipy.svg?branch=master
+    :target: https://travis-ci.org/mcsitter/adnipy
+    :alt: Travis CI
+
+.. image:: https://readthedocs.org/projects/adnipy/badge/?version=latest
+    :target: https://adnipy.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+
 Process ADNI study data with adnipy.
 
 
