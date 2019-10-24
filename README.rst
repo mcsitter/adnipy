@@ -11,6 +11,10 @@ adnipy
     :target: https://adnipy.readthedocs.io/en/latest/?badge=latest
     :alt: documentation build status
 
+.. image:: https://img.shields.io/github/license/mcsitter/adnipy
+    :target: https://github.com/mcsitter/adnipy/blob/master/LICENSE
+    :alt: license
+
 
 Process ADNI study data with adnipy.
 
