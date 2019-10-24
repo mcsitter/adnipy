@@ -113,7 +113,7 @@ def standard_column_names(dataframe):
         dataframe["VISCODE"] = dataframe["VISCODE2"]
         del dataframe["VISCODE2"]
 
-    else: 
+    else:
         print('"VISCODE2" not included.')
 
     dataframe = rid(dataframe)
