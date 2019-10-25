@@ -10,12 +10,7 @@ __version__ = "0.0.1"
 import matplotlib
 import pandas as pd
 
-if pd.__version__[:4] == "0.25":
-    pass
-elif pd.__version__[:4] == "0.24":
-    pass
-elif pd.__version__[:4] == "0.23":
-    pass
+from .adni import ADNI
 
 from .adnipy import (
     drop_dynamic,
