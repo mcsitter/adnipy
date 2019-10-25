@@ -4,6 +4,14 @@ adnipy package
 Submodules
 ----------
 
+adnipy.adni module
+------------------
+
+.. automodule:: adnipy.adni
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 adnipy.adnipy module
 --------------------
 
