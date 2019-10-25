@@ -2,8 +2,6 @@
 
 """Tests for dataframe `adni` extension."""
 
-# Standard library imports
-import io
 
 # Third party imports
 import numpy as np
@@ -91,21 +89,6 @@ def test_df():
     dataframe = pd.DataFrame(subjects, columns=columns)
 
     return dataframe
-
-
-@pytest.fixture
-def test_file():
-    """Provide sample file which contains same data as test_df."""
-    file = io.StringIO(
-        "Subject ID,Description,Group,VISCODE,VISCODE2,Image ID,Acq Date,RID\n"
-        "101_S_1001,Average,MCI,m12,m12,100001,1/01/2001,1001\n"
-        "101_S_1001,Average,MCI,m24,m24,200001,1/01/2002,1001\n"
-        "102_S_1002,Average,AD,m12,m12,100002,2/02/2002,1002\n"
-        "102_S_1002,Dynamic,AD,m12,m12,200002,2/02/2002,1002\n"
-        "103_S_1003,Average,LMCI,m12,m12,100003,3/03/2003,1003\n"
-        "104_S_1004,Average,EMCI,m12,m12,100004,4/04/2004,1004\n"
-    )
-    return file
 
 
 @pytest.fixture
