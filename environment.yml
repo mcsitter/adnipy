@@ -33,6 +33,7 @@ dependencies:
     # documentation
     - sphinx-rtd-theme
     - watchdog
+    - doc8
 
     # testing
     - tox
