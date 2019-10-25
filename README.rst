@@ -15,6 +15,10 @@ adnipy
     :target: https://github.com/mcsitter/adnipy/blob/master/LICENSE
     :alt: license
 
+.. image:: https://codecov.io/gh/mcsitter/adnipy/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/mcsitter/adnipy
+    :alt: coverage
+
 
 Process ADNI study data with adnipy.
 
