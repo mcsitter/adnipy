@@ -4,7 +4,7 @@
 
 __author__ = """Maximilian Cosmo Sitter"""
 __email__ = "msitter@smail.uni-koeln.de"
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 
 # Let users know if they're missing any of our hard dependencies
 import matplotlib
