@@ -80,6 +80,7 @@ def standard_column_names(dataframe):
     0  101_S_1001
     1  102_S_1002
     >>> standard_column_names(subjects)
+    "VISCODE2" not included.
        Subject ID   RID
     0  101_S_1001  1001
     1  102_S_1002  1002
@@ -90,6 +91,7 @@ def standard_column_names(dataframe):
     0  100001
     1  100002
     >>> standard_column_names(images)
+    "VISCODE2" not included.
        Image ID
     0    100001
     1    100002

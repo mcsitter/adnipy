@@ -31,11 +31,12 @@ class ADNI:
         --------
         >>> subjects = pd.DataFrame({"Subject": ["101_S_1001", "102_S_1002"]})
         >>> subjects
-            Subject
+              Subject
         0  101_S_1001
         1  102_S_1002
-        >>> subjects.standard_column_names()
-        Subject ID   RID
+        >>> subjects.adni.standard_column_names()
+        "VISCODE2" not included.
+           Subject ID   RID
         0  101_S_1001  1001
         1  102_S_1002  1002
 
@@ -44,8 +45,9 @@ class ADNI:
             Image
         0  100001
         1  100002
-        >>> images.standard_column_names()
-        Image ID
+        >>> images.adni.standard_column_names()
+        "VISCODE2" not included.
+           Image ID
         0    100001
         1    100002
 
@@ -160,11 +162,11 @@ class ADNI:
         >>> subjects = {"Subject ID": ["100_S_1000", "101_S_1001"]}
         >>> collection = pd.DataFrame(subjects)
         >>> collection
-        Subject ID
+           Subject ID
         0  100_S_1000
         1  101_S_1001
-        >>> collection.rid()
-        Subject ID   RID
+        >>> collection.adni.rid()
+           Subject ID   RID
         0  100_S_1000  1000
         1  101_S_1001  1001
 
