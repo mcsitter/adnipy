@@ -41,6 +41,7 @@ import adnipy  # noqa: E402
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
+    "sphinx.ext.imgconverter",
     "sphinx.ext.viewcode",
     "numpydoc",
 ]
