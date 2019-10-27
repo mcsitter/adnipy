@@ -1,0 +1,21 @@
+# appveyor.yml
+---
+environment:
+  matrix:
+  - TOXENV: py35-pandas23
+  - TOXENV: py35-pandas24
+  - TOXENV: py35-pandas25
+  - TOXENV: py36-pandas23
+  - TOXENV: py36-pandas24
+  - TOXENV: py36-pandas25
+  - TOXENV: py37-pandas23
+  - TOXENV: py37-pandas24
+  - TOXENV: py37-pandas25
+
+build: off
+
+install:
+- pip install tox
+
+test_script:
+- tox
