@@ -3,9 +3,13 @@ adnipy
 ======
 
 
-.. image:: https://travis-ci.org/mcsitter/adnipy.svg?branch=master
-    :target: https://travis-ci.org/mcsitter/adnipy
+.. image:: https://travis-ci.com/mcsitter/adnipy.svg?branch=master
+    :target: https://travis-ci.com/mcsitter/adnipy
     :alt: travis build status
+
+.. image:: https://ci.appveyor.com/api/projects/status/xmkthg4jogd4eewb?svg=true
+    :target: https://ci.appveyor.com/project/mcsitter/adnipy
+    :alt: appveyor build status
 
 .. image:: https://readthedocs.org/projects/adnipy/badge/?version=latest
     :target: https://adnipy.readthedocs.io/en/latest/?badge=latest
