@@ -1,4 +1,4 @@
 matplotlib>=3.0.0
 pandas>=0.23.0
-numpydoc
-sphinx-rtd-theme
+numpydoc==0.9.1
+sphinx-rtd-theme==0.4.3
