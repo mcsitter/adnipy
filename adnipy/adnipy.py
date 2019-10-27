@@ -11,6 +11,43 @@ import pandas as pd
 # TODO df = df.reindex(columns=columns)
 # TODO def common_columns(left, right) --> list
 
+DATES = [
+    # Collections
+    "Acq Date",
+    "Downloaded",
+    # ADNIMERGE
+    "EXAMDATE",
+    "EXAMDATE_bl",
+    "update_stamp",
+    # DESIKANLAB
+    "USERDATE",
+    "update_stamp",
+    # TAUMETA
+    "USERDATE",
+    "USERDATE2",
+    "SCANDATE",
+    "TAUTRANDT",
+    "update_stamp",
+    # TAUMETA3
+    "USERDATE",
+    "USERDATE2",
+    "SCANDATE",
+    "TRANDATE",
+    "update_stamp",
+]
+
+MAPPER = {
+    # Collections
+    "Image": "Image ID",
+    "Image Data ID": "Image ID",
+    "Subject": "Subject ID",
+    "Acq Date": "SCANDATE",
+    # ADNIMERGE
+    "PTID": "Subject ID",
+    # TAUMETA3
+    "ASSAYTIME": "TAUTIME",
+}
+
 
 def read_csv(file):
     """Return a csv file as a pandas.DataFrame.
@@ -27,7 +64,7 @@ def read_csv(file):
     pd.DataFrame
         Returns the file as a dataframe.
 
-    See also
+    See Also
     --------
     standard_column_names
     standard_dates
@@ -68,7 +105,7 @@ def standard_column_names(dataframe):
     pd.DataFrame
         This will have standardized columns names.
 
-    See also
+    See Also
     --------
     rid
 
@@ -97,18 +134,6 @@ def standard_column_names(dataframe):
     1    100002
 
     """
-    MAPPER = {
-        # Collections
-        "Image": "Image ID",
-        "Image Data ID": "Image ID",
-        "Subject": "Subject ID",
-        "Acq Date": "SCANDATE",
-        # ADNIMERGE
-        "PTID": "Subject ID",
-        # TAUMETA3
-        "ASSAYTIME": "TAUTIME",
-    }
-
     dataframe = dataframe.rename(mapper=MAPPER, axis="columns")
 
     if "VISCODE2" in dataframe.columns:
@@ -137,31 +162,6 @@ def standard_dates(dataset):
         Dates will have the appropriate dtype.
 
     """
-    DATES = [
-        # Collections
-        "Acq Date",
-        "Downloaded",
-        # ADNIMERGE
-        "EXAMDATE",
-        "EXAMDATE_bl",
-        "update_stamp",
-        # DESIKANLAB
-        "USERDATE",
-        "update_stamp",
-        # TAUMETA
-        "USERDATE",
-        "USERDATE2",
-        "SCANDATE",
-        "TAUTRANDT",
-        "update_stamp",
-        # TAUMETA3
-        "USERDATE",
-        "USERDATE2",
-        "SCANDATE",
-        "TRANDATE",
-        "update_stamp",
-    ]
-
     for date in DATES:
         if date in dataset.columns:
             dataset.loc[:, date] = pd.to_datetime(dataset.loc[:, date])
@@ -302,8 +302,7 @@ def groups(collection, grouped_mci=True):
 
 
 def longitudinal(images):
-    """
-    Keep only longitudinal data.
+    """Keep only longitudinal data.
 
     This requires an 'RID' or 'Subject ID' column in the dataframe.
     Do not use if multiple images are present for a single timepoint.
@@ -318,7 +317,7 @@ def longitudinal(images):
     pd.DataFrame
         A dataframe with only longitudinal data.
 
-    See also
+    See Also
     --------
     drop_dynamic
 

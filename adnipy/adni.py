@@ -8,7 +8,63 @@ import pandas as pd
 
 @pd.api.extensions.register_dataframe_accessor("adni")
 class ADNI:
+    """Dataframe deals with ADNI data.
+
+    This class presents methods, which are designed to work with data from the
+    ADNI database.
+    """
+
+    DATES = [
+        # Collections
+        "Acq Date",
+        "Downloaded",
+        # ADNIMERGE
+        "EXAMDATE",
+        "EXAMDATE_bl",
+        "update_stamp",
+        # DESIKANLAB
+        "USERDATE",
+        "update_stamp",
+        # TAUMETA
+        "USERDATE",
+        "USERDATE2",
+        "SCANDATE",
+        "TAUTRANDT",
+        "update_stamp",
+        # TAUMETA3
+        "USERDATE",
+        "USERDATE2",
+        "SCANDATE",
+        "TRANDATE",
+        "update_stamp",
+    ]
+    INDEX = ["Subject ID", "Image ID"]
+    MAPPER = {
+        # Collections
+        "Image": "Image ID",
+        "Image Data ID": "Image ID",
+        "Subject": "Subject ID",
+        "Acq Date": "SCANDATE",
+        # ADNIMERGE
+        "PTID": "Subject ID",
+        # TAUMETA3
+        "ASSAYTIME": "TAUTIME",
+    }
+
     def __init__(self, pandas_dataframe):
+        """Pass dataframe to the _df attribute of ADNI object.
+
+        Parameters
+        ----------
+        pandas_dataframe : pd.DataFrame
+            This dataframe will be stored in the _df attribute.
+
+        Attributes
+        ----------
+        _df : pd.DataFrame
+            This represents the dataframe object, which calls the method.
+
+        """
         self._df = pandas_dataframe
 
     def standard_column_names(self):
@@ -23,7 +79,7 @@ class ADNI:
         pd.DataFrame
             This will have standardized columns names.
 
-        See also
+        See Also
         --------
         rid
 
@@ -52,19 +108,7 @@ class ADNI:
         1    100002
 
         """
-        MAPPER = {
-            # Collections
-            "Image": "Image ID",
-            "Image Data ID": "Image ID",
-            "Subject": "Subject ID",
-            "Acq Date": "SCANDATE",
-            # ADNIMERGE
-            "PTID": "Subject ID",
-            # TAUMETA3
-            "ASSAYTIME": "TAUTIME",
-        }
-
-        self._df = self._df.rename(mapper=MAPPER, axis="columns")
+        self._df = self._df.rename(mapper=self.MAPPER, axis="columns")
 
         if "VISCODE2" in self._df.columns:
             self._df["VISCODE"] = self._df["VISCODE2"]
@@ -86,32 +130,7 @@ class ADNI:
             Dates will have the appropriate dtype.
 
         """
-        DATES = [
-            # Collections
-            "Acq Date",
-            "Downloaded",
-            # ADNIMERGE
-            "EXAMDATE",
-            "EXAMDATE_bl",
-            "update_stamp",
-            # DESIKANLAB
-            "USERDATE",
-            "update_stamp",
-            # TAUMETA
-            "USERDATE",
-            "USERDATE2",
-            "SCANDATE",
-            "TAUTRANDT",
-            "update_stamp",
-            # TAUMETA3
-            "USERDATE",
-            "USERDATE2",
-            "SCANDATE",
-            "TRANDATE",
-            "update_stamp",
-        ]
-
-        for date in DATES:
+        for date in self.DATES:
             if date in self._df.columns:
                 self._df.loc[:, date] = pd.to_datetime(self._df.loc[:, date])
 
@@ -249,7 +268,7 @@ class ADNI:
         pd.DataFrame
             A dataframe with only longitudinal data.
 
-        See also
+        See Also
         --------
         drop_dynamic
 
@@ -270,11 +289,10 @@ class ADNI:
             for timepoint 2.
 
         """
-        INDEX = ["Subject ID", "Image ID"]
         df = self._df
 
         df.reset_index(inplace=True)
-        df.set_index(INDEX, inplace=True)
+        df.set_index(self.INDEX, inplace=True)
         df.sort_index(inplace=True)
         if "index" in df.columns:
             df = df.drop(columns="index")

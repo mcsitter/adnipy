@@ -42,8 +42,8 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
     "sphinx.ext.imgconverter",
+    "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
-    "numpydoc",
 ]
 # html4_writer = True
 
@@ -122,7 +122,7 @@ htmlhelp_basename = "adnipydoc"
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
-    'papersize': 'a4paper',
+    "papersize": "a4paper",
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',

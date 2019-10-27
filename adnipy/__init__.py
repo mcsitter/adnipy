@@ -11,7 +11,6 @@ import matplotlib
 import pandas as pd
 
 from .adni import ADNI
-
 from .adnipy import (
     drop_dynamic,
     get_matching_images,

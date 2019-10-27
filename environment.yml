@@ -8,13 +8,14 @@ dependencies:
 
   # code checks
   - flake8
+  - flake8-import-order
+  - pep8-naming
 
   # code formatting
   - black
 
   # documentation
   - sphinx=1.8.5
-  - numpydoc
 
   # testing
   - pytest
@@ -24,12 +25,17 @@ dependencies:
   # requirements
   - pandas
   - matplotlib
+  - jupyter
 
   # distribution
   - twine
 
   # pypi packages
   - pip:
+    # code checks
+    - flake8-bugbear
+    - flake8-docstrings
+
     # documentation
     - sphinx-rtd-theme
     - watchdog
