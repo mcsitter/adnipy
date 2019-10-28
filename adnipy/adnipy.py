@@ -8,8 +8,6 @@ import warnings
 # Third party imports
 import pandas as pd
 
-# TODO df = df.reindex(columns=columns)
-# TODO def common_columns(left, right) --> list
 
 DATES = [
     # Collections
@@ -440,7 +438,7 @@ def get_matching_images(left, right):
     matching_images = []
     right_subjects = right.index.get_level_values(0)
 
-    def closest_date(subject):
+    def closest_date(subject, index):
         """Get closest date from list."""
         unique_dates = subject.index.unique()
         closest_date = min(
@@ -452,7 +450,7 @@ def get_matching_images(left, right):
     for index in left.index:
         if index[0] in right_subjects:
             subject = right.loc[index[0]]
-            date = closest_date(subject)
+            date = closest_date(subject, index)
             matching_image = right.loc[index[0], date]
             image = left.loc[[index]]
             image["Image ID_r"] = matching_image.values[0]
