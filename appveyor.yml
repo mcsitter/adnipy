@@ -5,7 +5,8 @@ environment:
   - TOXENV: py35-pandas23
   - TOXENV: py35-pandas24
   - TOXENV: py35-pandas25
-  - TOXENV: py35-pandas10
+#   Python 3.5 is not supported by pandas>=1.0
+#   - TOXENV: py35-pandas10
   - TOXENV: py36-pandas23
   - TOXENV: py36-pandas24
   - TOXENV: py36-pandas25
