@@ -5,15 +5,19 @@ environment:
   - TOXENV: py35-pandas23
   - TOXENV: py35-pandas24
   - TOXENV: py35-pandas25
+  - TOXENV: py35-pandas10
   - TOXENV: py36-pandas23
   - TOXENV: py36-pandas24
   - TOXENV: py36-pandas25
+  - TOXENV: py36-pandas10
   - TOXENV: py37-pandas23
   - TOXENV: py37-pandas24
   - TOXENV: py37-pandas25
+  - TOXENV: py37-pandas10
   - TOXENV: py38-pandas23
   - TOXENV: py38-pandas24
   - TOXENV: py38-pandas25
+  - TOXENV: py38-pandas10
 
 build: off
 
