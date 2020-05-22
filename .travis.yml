@@ -10,6 +10,7 @@ python:
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
+  - sudo apt-get -y install build-essential
   - pip install tox-travis
   - pip install codecov
 
