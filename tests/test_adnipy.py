@@ -2,6 +2,8 @@
 
 """Tests for `adnipy` package."""
 
+# pylint: disable=W0621
+
 # Standard library imports
 import io
 
@@ -69,9 +71,9 @@ def test_timepoints(test_df):
 def test_calculating_timedelta_of_scandate(test_timepoints):
     """Test calculating timedelta of 2 dataframes."""
     for timepoint, dataframe in test_timepoints.items():
-        df = dataframe.rename(columns={"Acq Date": "SCANDATE"})
-        df["SCANDATE"] = pd.to_datetime(df["SCANDATE"])
-        test_timepoints[timepoint] = df
+        timepoint_df = dataframe.rename(columns={"Acq Date": "SCANDATE"})
+        timepoint_df["SCANDATE"] = pd.to_datetime(timepoint_df["SCANDATE"])
+        test_timepoints[timepoint] = timepoint_df
     correct_dtype = np.dtype("<m8[ns]")
     timedeltas = adnipy.timedelta(
         test_timepoints["Timepoint 1"], test_timepoints["Timepoint 2"]
