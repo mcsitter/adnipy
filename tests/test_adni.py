@@ -2,13 +2,14 @@
 
 """Tests for dataframe `adni` extension."""
 
+# pylint: disable=W0621
 
 # Third party imports
 import numpy as np
 import pandas as pd
 import pytest
 
-from adnipy import adni  # noqa: F401
+from adnipy import adni  # noqa: F401 pylint: disable=W0611
 
 
 @pytest.fixture

@@ -2,6 +2,8 @@
 
 """Pandas dataframe extension for ADNI."""
 
+# pylint: disable=R0914
+
 # Third party imports
 import pandas as pd
 
@@ -156,15 +158,17 @@ class ADNI:
         if index is None:
             index = ["Subject ID", "Image ID", "RID", "Visit", "SCANDATE"]
 
-        df = self._df.reset_index()
-        df = df.set_index([column for column in index if column in df.columns])
+        dataframe = self._df.reset_index()
+        dataframe = dataframe.set_index(
+            [column for column in index if column in dataframe.columns]
+        )
 
-        if "index" in df.columns:
-            df = df.drop(columns="index")
-        df = df.dropna(axis="columns", how="all")
-        df = df.sort_index()
+        if "index" in dataframe.columns:
+            dataframe = dataframe.drop(columns="index")
+        dataframe = dataframe.dropna(axis="columns", how="all")
+        dataframe = dataframe.sort_index()
 
-        return df
+        return dataframe
 
     def rid(self):
         """Add a roster ID column.
@@ -289,20 +293,20 @@ class ADNI:
             for timepoint 2.
 
         """
-        df = self._df
+        dataframe = self._df
 
-        df.reset_index(inplace=True)
-        df.set_index(self.INDEX, inplace=True)
-        df.sort_index(inplace=True)
-        if "index" in df.columns:
-            df = df.drop(columns="index")
-        if "Description" in df.columns:
+        dataframe.reset_index(inplace=True)
+        dataframe.set_index(self.INDEX, inplace=True)
+        dataframe.sort_index(inplace=True)
+        if "index" in dataframe.columns:
+            dataframe = dataframe.drop(columns="index")
+        if "Description" in dataframe.columns:
             raise ValueError(
                 "Make sure that 'Description' is not in columns "
                 "and only one image per timepoint is in the pd.DataFrame."
             )
-        df_subjects = df.index.get_level_values(0)
-        df_images = df.index.get_level_values(1)
+        df_subjects = dataframe.index.get_level_values(0)
+        df_images = dataframe.index.get_level_values(1)
 
         timepoints = {}
 
@@ -310,18 +314,20 @@ class ADNI:
             total_timepoints = max(df_subjects.value_counts())
             for i in range(total_timepoints):
                 timepoint = i + 1
-                timepoint_df = df[~df_subjects.duplicated(keep="first")]
+                timepoint_df = dataframe[~df_subjects.duplicated(keep="first")]
                 timepoint_str = "Timepoint " + str(timepoint)
                 timepoints[timepoint_str] = timepoint_df
-                df = df[~df_images.isin(timepoint_df.index.get_level_values(1))]
-                df_subjects = df.index.get_level_values(0)
-                df_images = df.index.get_level_values(1)
+                dataframe = dataframe[
+                    ~df_images.isin(timepoint_df.index.get_level_values(1))
+                ]
+                df_subjects = dataframe.index.get_level_values(0)
+                df_images = dataframe.index.get_level_values(1)
 
         elif second == "last":
-            timepoint_1 = df[~df_subjects.duplicated()]
+            timepoint_1 = dataframe[~df_subjects.duplicated()]
             timepoints["Timepoint 1"] = timepoint_1
             timepoint_1_images = timepoint_1.index.get_level_values(1)
-            after_timepoint_1 = df[~df_images.isin(timepoint_1_images)]
+            after_timepoint_1 = dataframe[~df_images.isin(timepoint_1_images)]
 
             after_tp_1_images = after_timepoint_1.index.get_level_values(0)
             timepoint_2_last = after_timepoint_1[
