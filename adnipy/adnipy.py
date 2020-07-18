@@ -43,9 +43,9 @@ def read_csv(file):
         "PTAU_bl": object,
     }
 
-    df = pd.read_csv(file, dtype=dtype, na_values=na_values)
+    dataframe = pd.read_csv(file, dtype=dtype, na_values=na_values)
 
-    return df
+    return dataframe
 
 
 def timedelta(old, new):

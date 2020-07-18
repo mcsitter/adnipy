@@ -21,12 +21,14 @@
 
 """adnipy documentation build configuration file."""
 
+# pylint: disable=C0103,C0413,W0622
+
 import os
 import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-import sphinx_rtd_theme  # noqa: F401
+import sphinx_rtd_theme  # noqa: F401 pylint: disable=W0611
 
 import adnipy  # noqa: E402
 
