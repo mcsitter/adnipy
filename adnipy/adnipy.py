@@ -106,9 +106,7 @@ def get_matching_images(left, right):
     def closest_date(subject, index):
         """Get closest date from list."""
         unique_dates = subject.index.unique()
-        closest_date = min(
-            unique_dates, key=lambda x, index=index: abs(x - index[1])
-        )
+        closest_date = min(unique_dates, key=lambda x, index=index: abs(x - index[1]))
 
         return closest_date
 
@@ -124,9 +122,7 @@ def get_matching_images(left, right):
             missing_match.append(index)
 
     matching_images_df = pd.concat(matching_images)
-    matching_images_df = matching_images_df.rename(
-        columns={"Image ID": "Image ID_l"}
-    )
+    matching_images_df = matching_images_df.rename(columns={"Image ID": "Image ID_l"})
 
     if missing_match:
         missing_match_str = str(set(missing_match))

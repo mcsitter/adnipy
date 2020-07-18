@@ -15,7 +15,7 @@ dependencies:
   - black
 
   # documentation
-  - sphinx=1.8.5
+  - sphinx
 
   # testing
   - pytest

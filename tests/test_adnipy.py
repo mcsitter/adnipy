@@ -27,66 +27,12 @@ def test_df():
         "RID",
     ]
     subjects = [
-        [
-            "101_S_1001",
-            "Average",
-            "MCI",
-            "m12",
-            "m12",
-            100001,
-            "1/01/2001",
-            1001,
-        ],
-        [
-            "101_S_1001",
-            "Average",
-            "MCI",
-            "m24",
-            "m24",
-            200001,
-            "1/01/2002",
-            1001,
-        ],
-        [
-            "102_S_1002",
-            "Average",
-            "AD",
-            "m12",
-            "m12",
-            100002,
-            "2/02/2002",
-            1002,
-        ],
-        [
-            "102_S_1002",
-            "Dynamic",
-            "AD",
-            "m12",
-            "m12",
-            200002,
-            "2/02/2002",
-            1002,
-        ],
-        [
-            "103_S_1003",
-            "Average",
-            "LMCI",
-            "m12",
-            "m12",
-            100003,
-            "3/03/2003",
-            1003,
-        ],
-        [
-            "104_S_1004",
-            "Average",
-            "EMCI",
-            "m12",
-            "m12",
-            100004,
-            "4/04/2004",
-            1004,
-        ],
+        ["101_S_1001", "Average", "MCI", "m12", "m12", 100001, "1/01/2001", 1001],
+        ["101_S_1001", "Average", "MCI", "m24", "m24", 200001, "1/01/2002", 1001],
+        ["102_S_1002", "Average", "AD", "m12", "m12", 100002, "2/02/2002", 1002],
+        ["102_S_1002", "Dynamic", "AD", "m12", "m12", 200002, "2/02/2002", 1002],
+        ["103_S_1003", "Average", "LMCI", "m12", "m12", 100003, "3/03/2003", 1003],
+        ["104_S_1004", "Average", "EMCI", "m12", "m12", 100004, "4/04/2004", 1004],
     ]
 
     dataframe = pd.DataFrame(subjects, columns=columns)
@@ -114,12 +60,8 @@ def test_timepoints(test_df):
     """Dictionairy for the timepoints in test_df if Description is ignored."""
     test_df = test_df.drop(columns=["Description"])
     timepoints = {
-        "Timepoint 1": test_df.iloc[[0, 2, 4, 5]].set_index(
-            ["Subject ID", "Image ID"]
-        ),
-        "Timepoint 2": test_df.iloc[[1, 3]].set_index(
-            ["Subject ID", "Image ID"]
-        ),
+        "Timepoint 1": test_df.iloc[[0, 2, 4, 5]].set_index(["Subject ID", "Image ID"]),
+        "Timepoint 2": test_df.iloc[[1, 3]].set_index(["Subject ID", "Image ID"]),
     }
     return timepoints
 
@@ -183,9 +125,7 @@ def test_find_matching_images_without_missing_match():
     correct = pd.DataFrame(
         {
             "Subject ID": ["101_S_1001", "102_S_1002", "104_S_1004"],
-            "SCANDATE": pd.to_datetime(
-                ["1/01/2001", "2/02/2002", "4/04/2004"]
-            ),
+            "SCANDATE": pd.to_datetime(["1/01/2001", "2/02/2002", "4/04/2004"]),
             "Image ID_l": [100001, 100002, 100004],
             "Image ID_r": [100011, 200012, 100014],
         }
@@ -235,9 +175,7 @@ def test_find_matching_images_with_missing_match():
     correct = pd.DataFrame(
         {
             "Subject ID": ["101_S_1001", "102_S_1002", "104_S_1004"],
-            "SCANDATE": pd.to_datetime(
-                ["1/01/2001", "2/02/2002", "4/04/2004"]
-            ),
+            "SCANDATE": pd.to_datetime(["1/01/2001", "2/02/2002", "4/04/2004"]),
             "Image ID_l": [100001, 100002, 100004],
             "Image ID_r": [100011, 200012, 100014],
         }

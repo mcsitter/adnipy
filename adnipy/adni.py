@@ -313,9 +313,7 @@ class ADNI:
                 timepoint_df = df[~df_subjects.duplicated(keep="first")]
                 timepoint_str = "Timepoint " + str(timepoint)
                 timepoints[timepoint_str] = timepoint_df
-                df = df[
-                    ~df_images.isin(timepoint_df.index.get_level_values(1))
-                ]
+                df = df[~df_images.isin(timepoint_df.index.get_level_values(1))]
                 df_subjects = df.index.get_level_values(0)
                 df_images = df.index.get_level_values(1)
 
