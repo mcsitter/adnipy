@@ -104,6 +104,7 @@ ENV/
 */.ipynb_checkpoints/*
 
 ### VisualStudioCode ###
+.devcontainer/
 .vscode/
 
 ### Data ###

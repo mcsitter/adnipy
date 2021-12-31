@@ -13,13 +13,17 @@ environment:
   - TOXENV: py37-pandas24
   - TOXENV: py37-pandas25
   - TOXENV: py37-pandas10
+  - TOXENV: py37-pandas13
   - TOXENV: py38-pandas25
   - TOXENV: py38-pandas10
+  - TOXENV: py38-pandas13
+  # - TOXENV: py39-pandas10
+  # - TOXENV: py39-pandas13
+  # - TOXENV: py310-pandas13
 
 build: off
 
 install:
-- pip install tox
-
+  - py -m pip install tox
 test_script:
-- tox
+  - py -m tox
