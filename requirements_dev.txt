@@ -1,4 +1,4 @@
 matplotlib>=3.0.0
 pandas>=0.23.0
 pre-commit
-sphinx-rtd-theme==1.1.1
+sphinx-rtd-theme==1.2.0
