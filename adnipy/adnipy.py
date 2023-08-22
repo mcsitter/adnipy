@@ -127,6 +127,6 @@ def get_matching_images(left, right):
     if missing_match:
         missing_match_str = str(set(missing_match))
         message = "Could not find matching images for:" + missing_match_str
-        warnings.warn(message)
+        warnings.warn(message, stacklevel=1)
 
     return matching_images_df
