@@ -62,9 +62,9 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"adnipy"
-copyright = u"2019, Maximilian Cosmo Sitter"
-author = u"Maximilian Cosmo Sitter"
+project = "adnipy"
+copyright = "2019, Maximilian Cosmo Sitter"
+author = "Maximilian Cosmo Sitter"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -143,8 +143,8 @@ latex_documents = [
     (
         master_doc,
         "adnipy.tex",
-        u"adnipy Documentation",
-        u"Maximilian Cosmo Sitter",
+        "adnipy Documentation",
+        "Maximilian Cosmo Sitter",
         "manual",
     )
 ]
@@ -154,7 +154,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "adnipy", u"adnipy Documentation", [author], 1)]
+man_pages = [(master_doc, "adnipy", "adnipy Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------
@@ -166,7 +166,7 @@ texinfo_documents = [
     (
         master_doc,
         "adnipy",
-        u"adnipy Documentation",
+        "adnipy Documentation",
         author,
         "adnipy",
         "One line description of project.",

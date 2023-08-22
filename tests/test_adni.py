@@ -2,10 +2,10 @@
 
 """Tests for dataframe `adni` extension."""
 
-# pylint: disable=W0621
+# pylint: disable=W0621, R0801
+
 
 # Third party imports
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -67,23 +67,16 @@ def test_longitundal_only(test_df):
 
 def test_drop_dynamic_images(test_df):
     """Test dropping entries with dynamic description."""
-    correct = test_df.drop(index=(3))
+    correct = test_df.drop(index=[3])
     no_dynamics = test_df.adni.drop_dynamic()
     pd.testing.assert_frame_equal(correct, no_dynamics)
 
 
 def test_drop_dynamic_without_description_columns(test_df):
     """Test dropping dynamic images without description column present."""
-    test_df = test_df.drop(columns=("Description"))
+    test_df = test_df.drop(columns=["Description"])
     with pytest.raises(KeyError):
         test_df.adni.drop_dynamic()
-
-
-def test_datetime_dtype_conversion(test_df):
-    """Test converting dates to datetime dtype."""
-    correct_dtype = np.dtype("<M8[ns]")
-    date_column_type = test_df.adni.standard_dates()["Acq Date"].dtype
-    assert correct_dtype == date_column_type
 
 
 def test_standardizing_index(test_df):

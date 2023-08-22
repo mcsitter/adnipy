@@ -2,7 +2,7 @@
 
 """Tests for `adnipy` package."""
 
-# pylint: disable=W0621
+# pylint: disable=W0621, R0801
 
 # Standard library imports
 import io
