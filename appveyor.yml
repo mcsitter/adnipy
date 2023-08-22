@@ -1,8 +1,6 @@
 # appveyor.yml
 image:
     - Visual Studio 2019
-    - Ubuntu
-    - macOS
 
 environment:
     matrix:
