@@ -1,29 +1,25 @@
 # appveyor.yml
----
 environment:
   matrix:
-  - TOXENV: py35-pandas23
-  - TOXENV: py35-pandas24
-  - TOXENV: py35-pandas25
-  - TOXENV: py36-pandas23
-  - TOXENV: py36-pandas24
-  - TOXENV: py36-pandas25
-  - TOXENV: py36-pandas10
-  - TOXENV: py37-pandas23
-  - TOXENV: py37-pandas24
-  - TOXENV: py37-pandas25
-  - TOXENV: py37-pandas10
-  - TOXENV: py37-pandas13
-  - TOXENV: py38-pandas25
-  - TOXENV: py38-pandas10
-  - TOXENV: py38-pandas13
-  # - TOXENV: py39-pandas10
-  # - TOXENV: py39-pandas13
-  # - TOXENV: py310-pandas13
+    - TOXENV: py38-pandas1
+    - TOXENV: py38-pandas2
+    - TOXENV: py38-pandas3
+    - TOXENV: py39-pandas1
+    - TOXENV: py39-pandas2
+    - TOXENV: py39-pandas3
+    - TOXENV: py310-pandas1
+    - TOXENV: py310-pandas2
+    - TOXENV: py310-pandas3
+    - TOXENV: py311-pandas1
+    - TOXENV: py311-pandas2
+    - TOXENV: py311-pandas3
+    - TOXENV: flake8
+    - TOXENV: doc8
 
 build: off
 
 install:
   - py -m pip install tox
+
 test_script:
   - py -m tox
