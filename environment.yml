@@ -1,49 +1,49 @@
 name: adnipy-dev
 channels:
-  - defaults
+    - defaults
 dependencies:
-  # required
-  - python
-  - pip
+    # required
+    - python
+    - pip
 
-  # code checks
-  - flake8
-  - flake8-import-order
-  - pep8-naming
-
-  # code formatting
-  - black
-
-  # documentation
-  - sphinx
-
-  # testing
-  - pytest
-  - pytest-cov
-  - coverage
-
-  # requirements
-  - pandas
-  - matplotlib
-  - jupyter
-
-  # distribution
-  - twine
-
-  # pypi packages
-  - pip:
     # code checks
-    - flake8-bugbear
-    - flake8-docstrings
+    - flake8
+    - flake8-import-order
+    - pep8-naming
+
+    # code formatting
+    - black
 
     # documentation
-    - sphinx-rtd-theme
-    - watchdog
-    - doc8
+    - sphinx
 
     # testing
-    - tox
-    - tox-conda
+    - pytest
+    - pytest-cov
+    - coverage
+
+    # requirements
+    - pandas
+    - matplotlib
+    - jupyter
 
     # distribution
-    - bumpversion
+    - twine
+
+    # pypi packages
+    - pip:
+          # code checks
+          - flake8-bugbear
+          - flake8-docstrings
+
+          # documentation
+          - sphinx-rtd-theme
+          - watchdog
+          - doc8
+
+          # testing
+          - tox
+          - tox-conda
+
+          # distribution
+          - bumpversion
