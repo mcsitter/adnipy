@@ -1,6 +1,6 @@
--   adnipy version:
--   Python version:
--   Operating System:
+- adnipy version:
+- Python version:
+- Operating System:
 
 ### Description
 
