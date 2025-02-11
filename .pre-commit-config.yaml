@@ -11,7 +11,7 @@ repos:
       - id: check-case-conflict
       - id: requirements-txt-fixer
   - repo: https://github.com/psf/black
-    rev: 24.10.0
+    rev: 25.1.0
     hooks:
       - id: black
         language_version: python3
@@ -25,12 +25,12 @@ repos:
           - flake8-import-order
           - pep8-naming
   - repo: https://github.com/timothycrosley/isort/
-    rev: 5.13.2
+    rev: 6.0.0
     hooks:
       - id: isort
 
   - repo: https://github.com/PyCQA/pylint/
-    rev: v3.3.3
+    rev: v3.3.4
     hooks:
       - id: pylint
         args: [--disable=E0401]
