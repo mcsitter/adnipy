@@ -5,9 +5,6 @@
 # Standard library imports
 import re
 
-# Third party imports
-import pandas as pd
-
 
 def image_id_from_filename(filename):
     """Extract image ID of single ADNI .nii filename.
