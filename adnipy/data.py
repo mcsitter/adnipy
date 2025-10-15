@@ -32,8 +32,6 @@ def image_id_from_filename(filename):
 
     """
     image_id_format = re.compile("_I([0-9]*).nii")
-
     image_id = re.search(image_id_format, filename).group(1)
-    image_id = pd.to_numeric(image_id)
-
+    image_id = int(image_id)
     return image_id
