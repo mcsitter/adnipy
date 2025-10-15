@@ -13,3 +13,9 @@ History
 
 * Improved documentation.
 * Added pandas dataframe class extension for ADNI
+
+1.0.0 (2025-10-15)
+------------------
+
+* Support for Python 3.10 and later.
+* Integration with pandas 2.0 and later.
