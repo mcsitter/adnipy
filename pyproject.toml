@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adnipy"
+version = "0.1.0"
+description = "Process ADNI study data with adnipy."
+authors = [
+    { name = "Maximilian Cosmo Sitter", email = "msitter@smail.uni-koeln.de" }
+]
+license = { file = "LICENSE" }
+readme = "README.rst"
+requires-python = ">=3.10"
+keywords = ["adnipy"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13"
+]
+dependencies = [
+    "pandas>=2.0.0",
+    "matplotlib>=3.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/mcsitter/adnipy"
+
+[tool.setuptools.packages.find]
+include = ["adnipy*"]
