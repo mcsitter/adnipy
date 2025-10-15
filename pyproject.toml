@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "adnipy"
-version = "0.1.0"
+version = "1.0.0"
 description = "Process ADNI study data with adnipy."
 authors = [
     { name = "Maximilian Cosmo Sitter", email = "msitter@smail.uni-koeln.de" }
