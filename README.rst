@@ -2,9 +2,9 @@
 adnipy
 ======
 
-.. image:: https://ci.appveyor.com/api/projects/status/xmkthg4jogd4eewb/branch/master?svg=true
+.. image:: https://img.shields.io/appveyor/build/mcsitter/adnipy/master
     :target: https://ci.appveyor.com/project/mcsitter/adnipy
-    :alt: appveyor build status
+    :alt: AppVeyor Build Status
 
 .. image:: https://readthedocs.org/projects/adnipy/badge/?version=latest
     :target: https://adnipy.readthedocs.io/en/latest/?badge=latest
