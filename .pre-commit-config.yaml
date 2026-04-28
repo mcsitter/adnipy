@@ -25,7 +25,7 @@ repos:
           - flake8-import-order
           - pep8-naming
   - repo: https://github.com/timothycrosley/isort/
-    rev: 8.0.1
+    rev: 9.0.0a3
     hooks:
       - id: isort
 
