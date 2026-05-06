@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Process ADNI study data with adnipy."""
 
 # Standard library imports
@@ -9,7 +7,7 @@ import warnings
 import pandas as pd
 
 
-def read_csv(file):
+def read_csv(file: str) -> pd.DataFrame:
     """Return a csv file as a pandas.DataFrame.
 
     Recognizes missing values used in the ADNI database.
@@ -43,12 +41,10 @@ def read_csv(file):
         "PTAU_bl": object,
     }
 
-    dataframe = pd.read_csv(file, dtype=dtype, na_values=na_values)
-
-    return dataframe
+    return pd.read_csv(file, dtype=dtype, na_values=na_values)
 
 
-def timedelta(old, new):
+def timedelta(old: pd.DataFrame, new: pd.DataFrame) -> pd.Series:
     """Get timedelta between timepoints.
 
     Parameters
@@ -70,12 +66,10 @@ def timedelta(old, new):
     new = new.reset_index()
     new = new.set_index("Subject ID")
 
-    timedeltas = old["SCANDATE"] - new["SCANDATE"]
-
-    return timedeltas
+    return old["SCANDATE"] - new["SCANDATE"]
 
 
-def get_matching_images(left, right):
+def get_matching_images(left: pd.DataFrame, right: pd.DataFrame) -> pd.DataFrame:
     """Match different scan types based on closest date.
 
     The columns 'Subject ID' and 'SCANDATE' are required.
@@ -103,12 +97,10 @@ def get_matching_images(left, right):
     matching_images = []
     right_subjects = right.index.get_level_values(0)
 
-    def closest_date(subject, index):
+    def closest_date(subject: pd.DataFrame, index: tuple) -> pd.Timestamp:
         """Get closest date from list."""
         unique_dates = subject.index.unique()
-        closest_date = min(unique_dates, key=lambda x, index=index: abs(x - index[1]))
-
-        return closest_date
+        return min(unique_dates, key=lambda x, index=index: abs(x - index[1]))
 
     for index in left.index:
         if index[0] in right_subjects:
@@ -116,7 +108,7 @@ def get_matching_images(left, right):
             date = closest_date(subject, index)
             matching_image = right.loc[index[0], date]
             image = left.loc[[index]]
-            image["Image ID_r"] = matching_image.values[0]
+            image["Image ID_r"] = matching_image.to_numpy()[0]
             matching_images.append(image)
         else:
             missing_match.append(index)

@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-
 """Process data created in Matlab."""
 
 # Standard library imports
 import re
 
 
-def image_id_from_filename(filename):
+def image_id_from_filename(filename: str) -> int:
     """Extract image ID of single ADNI .nii filename.
 
     Images from the ADNI database have a specific formatting.
@@ -30,5 +28,4 @@ def image_id_from_filename(filename):
     """
     image_id_format = re.compile("_I([0-9]*).nii")
     image_id = re.search(image_id_format, filename).group(1)
-    image_id = int(image_id)
-    return image_id
+    return int(image_id)

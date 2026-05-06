@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*-
-
 """Pandas dataframe extension for ADNI."""
 
 # pylint: disable=R0914
 
 # Third party imports
+import logging
+from typing import ClassVar, Literal
+
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 @pd.api.extensions.register_dataframe_accessor("adni")
@@ -16,7 +19,7 @@ class ADNI:
     ADNI database.
     """
 
-    DATES = [
+    DATES: ClassVar[list[str]] = [
         # Collections
         "Acq Date",
         "Downloaded",
@@ -40,8 +43,8 @@ class ADNI:
         "TRANDATE",
         "update_stamp",
     ]
-    INDEX = ["Subject ID", "Image ID"]
-    MAPPER = {
+    INDEX: ClassVar[list[str]] = ["Subject ID", "Image ID"]
+    MAPPER: ClassVar[dict[str, str]] = {
         # Collections
         "Image": "Image ID",
         "Image Data ID": "Image ID",
@@ -53,7 +56,7 @@ class ADNI:
         "ASSAYTIME": "TAUTIME",
     }
 
-    def __init__(self, pandas_dataframe):
+    def __init__(self, pandas_dataframe: pd.DataFrame) -> None:
         """Pass dataframe to the _df attribute of ADNI object.
 
         Parameters
@@ -69,7 +72,7 @@ class ADNI:
         """
         self._df = pandas_dataframe
 
-    def standard_column_names(self):
+    def standard_column_names(self) -> pd.DataFrame:
         """Rename dataframe columns to module standard.
 
         This function helps when working with multiple dataframes,
@@ -93,7 +96,6 @@ class ADNI:
         0  101_S_1001
         1  102_S_1002
         >>> subjects.adni.standard_column_names()
-        "VISCODE2" not included.
            Subject ID   RID
         0  101_S_1001  1001
         1  102_S_1002  1002
@@ -104,7 +106,6 @@ class ADNI:
         0  100001
         1  100002
         >>> images.adni.standard_column_names()
-        "VISCODE2" not included.
            Image ID
         0    100001
         1    100002
@@ -117,13 +118,13 @@ class ADNI:
             del self._df["VISCODE2"]
 
         else:
-            print('"VISCODE2" not included.')
+            logger.warning('"VISCODE2" not included.')
 
         self._df = self.rid()
 
         return self._df
 
-    def standard_dates(self):
+    def standard_dates(self) -> pd.DataFrame:
         """Change type of date columns to datetime.
 
         Returns
@@ -138,7 +139,7 @@ class ADNI:
 
         return self._df
 
-    def standard_index(self, index=None):
+    def standard_index(self, index: list[str] | None = None) -> pd.DataFrame:
         """Process dataframes into a standardized format.
 
         The output is easy to read.
@@ -160,7 +161,7 @@ class ADNI:
 
         dataframe = self._df.reset_index()
         dataframe = dataframe.set_index(
-            [column for column in index if column in dataframe.columns]
+            [column for column in index if column in dataframe.columns],
         )
 
         if "index" in dataframe.columns:
@@ -170,7 +171,7 @@ class ADNI:
 
         return dataframe
 
-    def rid(self):
+    def rid(self) -> pd.DataFrame:
         """Add a roster ID column.
 
         Will not work if 'RID' is already present or 'Subject ID' is missing.
@@ -199,12 +200,12 @@ class ADNI:
         contains_subject_id = "Subject ID" in collection.columns
         if missing_rid and contains_subject_id:
             collection["RID"] = collection["Subject ID"].map(
-                lambda subject_id: pd.to_numeric(subject_id[-4:])
+                lambda subject_id: pd.to_numeric(subject_id[-4:]),
             )
 
         return collection
 
-    def drop_dynamic(self):
+    def drop_dynamic(self) -> pd.DataFrame:
         """Remove images which are dynamic.
 
         Drops all rows, in which the Description contains 'Dynamic'.
@@ -212,14 +213,12 @@ class ADNI:
         Returns
         -------
         pd.DataFrame
-            All images that are not dynamic.
+            A dataframe with only non-dynamic images.
 
         """
-        no_dynamic = self._df[~self._df["Description"].str.contains("Dynamic")]
+        return self._df[~self._df["Description"].str.contains("Dynamic")]
 
-        return no_dynamic
-
-    def groups(self, grouped_mci=True):
+    def groups(self, *, grouped_mci: bool = True) -> dict[str, pd.DataFrame]:
         """Create a dataframe for each group and save it to a csv file.
 
         Parameters
@@ -255,9 +254,8 @@ class ADNI:
 
         return groups
 
-    def longitudinal(self):
-        """
-        Keep only longitudinal data.
+    def longitudinal(self) -> pd.DataFrame:
+        """Keep only longitudinal data.
 
         This requires an 'RID' or 'Subject ID' column in the dataframe.
         Do not use if multiple images are present for a single timepoint.
@@ -279,11 +277,12 @@ class ADNI:
         """
         images = self.rid()
 
-        longitudinal = images[images["RID"].duplicated(keep=False)]
+        return images[images["RID"].duplicated(keep=False)]
 
-        return longitudinal
-
-    def timepoints(self, second="first"):
+    def timepoints(
+        self,
+        second: Literal["first", "last"] = "first",
+    ) -> dict[str, pd.Series]:
         """Extract timepoints from a dataframe.
 
         Parameters
@@ -294,17 +293,17 @@ class ADNI:
 
         """
         dataframe = self._df
-
-        dataframe.reset_index(inplace=True)
-        dataframe.set_index(self.INDEX, inplace=True)
-        dataframe.sort_index(inplace=True)
+        dataframe = dataframe.reset_index()
+        dataframe = dataframe.set_index(self.INDEX)
+        dataframe = dataframe.sort_index()
         if "index" in dataframe.columns:
             dataframe = dataframe.drop(columns="index")
         if "Description" in dataframe.columns:
-            raise ValueError(
+            msg = (
                 "Make sure that 'Description' is not in columns "
                 "and only one image per timepoint is in the pd.DataFrame."
             )
+            raise ValueError(msg)
         df_subjects = dataframe.index.get_level_values(0)
         df_images = dataframe.index.get_level_values(1)
 

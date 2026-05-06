@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # adnipy documentation build configuration file, created by
 # sphinx-quickstart on Fri Jun  9 13:47:02 2017.
@@ -30,7 +29,7 @@ sys.path.insert(0, os.path.abspath(".."))
 
 import sphinx_rtd_theme  # noqa: F401 pylint: disable=W0611
 
-import adnipy  # noqa: E402
+import adnipy
 
 # -- General configuration ---------------------------------------------
 
@@ -146,7 +145,7 @@ latex_documents = [
         "adnipy Documentation",
         "Maximilian Cosmo Sitter",
         "manual",
-    )
+    ),
 ]
 
 
@@ -171,5 +170,5 @@ texinfo_documents = [
         "adnipy",
         "One line description of project.",
         "Miscellaneous",
-    )
+    ),
 ]

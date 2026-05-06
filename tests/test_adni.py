@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Tests for dataframe `adni` extension."""
 
 # pylint: disable=W0621, R0801
-
 
 # Third party imports
 import pandas as pd
@@ -13,7 +10,7 @@ from adnipy import adni  # noqa: F401 pylint: disable=W0611
 
 
 @pytest.fixture
-def test_df():
+def test_df() -> pd.DataFrame:
     """Provide sample dataframe for standardized testing."""
     columns = [
         "Subject ID",
@@ -34,23 +31,20 @@ def test_df():
         ["104_S_1004", "Average", "EMCI", "m12", "m12", 100004, "4/04/2004", 1004],
     ]
 
-    dataframe = pd.DataFrame(subjects, columns=columns)
-
-    return dataframe
+    return pd.DataFrame(subjects, columns=columns)
 
 
 @pytest.fixture
-def test_timepoints(test_df):
+def test_timepoints(test_df: pd.DataFrame) -> dict[str, pd.DataFrame]:
     """Dictionairy for the timepoints in test_df if Description is ignored."""
     test_df = test_df.drop(columns=["Description"])
-    timepoints = {
+    return {
         "Timepoint 1": test_df.iloc[[0, 2, 4, 5]].set_index(["Subject ID", "Image ID"]),
         "Timepoint 2": test_df.iloc[[1, 3]].set_index(["Subject ID", "Image ID"]),
     }
-    return timepoints
 
 
-def test_rid_from_subject_id(test_df):
+def test_rid_from_subject_id(test_df: pd.DataFrame) -> None:
     """Test creating RID from Subject ID."""
     correct = test_df
     test_df = test_df.drop(columns="RID")
@@ -58,44 +52,44 @@ def test_rid_from_subject_id(test_df):
     pd.testing.assert_frame_equal(correct, with_rid)
 
 
-def test_longitundal_only(test_df):
+def test_longitundal_only(test_df: pd.DataFrame) -> None:
     """Test output dataframe being longitudinal only."""
     correct = test_df.drop(index=[4, 5])
     longitundal_only = test_df.adni.longitudinal()
     pd.testing.assert_frame_equal(correct, longitundal_only)
 
 
-def test_drop_dynamic_images(test_df):
+def test_drop_dynamic_images(test_df: pd.DataFrame) -> None:
     """Test dropping entries with dynamic description."""
     correct = test_df.drop(index=[3])
     no_dynamics = test_df.adni.drop_dynamic()
     pd.testing.assert_frame_equal(correct, no_dynamics)
 
 
-def test_drop_dynamic_without_description_columns(test_df):
+def test_drop_dynamic_without_description_columns(test_df: pd.DataFrame) -> None:
     """Test dropping dynamic images without description column present."""
     test_df = test_df.drop(columns=["Description"])
     with pytest.raises(KeyError):
         test_df.adni.drop_dynamic()
 
 
-def test_standardizing_index(test_df):
+def test_standardizing_index(test_df: pd.DataFrame) -> None:
     """Test conversion of index to standard."""
     correct_index = ["Subject ID", "Image ID", "RID"]
     standard_index = test_df.adni.standard_index().index.names
     assert correct_index == standard_index
 
 
-def test_renaming_columns_to_standard(test_df):
+def test_renaming_columns_to_standard(test_df: pd.DataFrame) -> None:
     """Test renaming of column Acq Date to SCANDATE."""
     correct = test_df.drop(columns=["VISCODE2"]).rename(
-        columns={"Acq Date": "SCANDATE"}
+        columns={"Acq Date": "SCANDATE"},
     )
     renamed = test_df.adni.standard_column_names()
     pd.testing.assert_frame_equal(correct, renamed)
 
 
-def test_extracting_groups_grouped_mci(test_df):
+def test_extracting_groups_grouped_mci(test_df: pd.DataFrame) -> None:
     """Test creating a datframe for each group."""
     correct = {
         "AD": test_df.iloc[[2, 3]],
@@ -110,7 +104,7 @@ def test_extracting_groups_grouped_mci(test_df):
     pd.testing.assert_frame_equal(correct["EMCI"], group_dict["EMCI"])
 
 
-def test_extracting_groups_sperate_mci_groups(test_df):
+def test_extracting_groups_sperate_mci_groups(test_df: pd.DataFrame) -> None:
     """Test creating a datframe for each group."""
     correct = {"MCI": test_df.iloc[[0, 1, 4, 5]], "AD": test_df.iloc[[2, 3]]}
     group_dict = test_df.adni.groups()
@@ -118,13 +112,18 @@ def test_extracting_groups_sperate_mci_groups(test_df):
     pd.testing.assert_frame_equal(correct["AD"], group_dict["AD"])
 
 
-def test_timepoint_extracting_raises_error_with_description(test_df):
+def test_timepoint_extracting_raises_error_with_description(
+    test_df: pd.DataFrame,
+) -> None:
     """Test raising error if Description in columns."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Make sure that 'Description' is not in"):
         test_df.adni.timepoints()
 
 
-def test_timepoint_extraction_second_timepoint_earliest(test_df, test_timepoints):
+def test_timepoint_extraction_second_timepoint_earliest(
+    test_df: pd.DataFrame,
+    test_timepoints: dict[str, pd.DataFrame],
+) -> None:
     """Test timepoint extraction with second='first'."""
     correct = test_timepoints
     test_df = test_df.drop(columns="Description")
@@ -132,7 +131,10 @@ def test_timepoint_extraction_second_timepoint_earliest(test_df, test_timepoints
     pd.testing.assert_frame_equal(correct["Timepoint 1"], timepoints["Timepoint 1"])
 
 
-def test_timepoint_extraction_second_timepoint_latest(test_df, test_timepoints):
+def test_timepoint_extraction_second_timepoint_latest(
+    test_df: pd.DataFrame,
+    test_timepoints: dict[str, pd.DataFrame],
+) -> None:
     """Test timepoint extraction with second='last'."""
     correct = test_timepoints
     test_df = test_df.drop(columns="Description")

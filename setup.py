@@ -1,14 +1,13 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """The setup script."""
+
+from pathlib import Path
 
 from setuptools import find_packages, setup
 
-with open("README.rst", encoding="utf-8") as readme_file:
+with Path("README.rst").open(encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-with open("HISTORY.rst", encoding="utf-8") as history_file:
+with Path("HISTORY.rst").open(encoding="utf-8") as history_file:
     history = history_file.read()
 
 requirements = ["pandas>=0.23.0", "matplotlib>=3.0.0"]

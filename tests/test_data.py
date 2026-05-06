@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-
 """Test the data module."""
 
 from adnipy import data
 
 
-def test_image_id_from_filename():
+def test_image_id_from_filename() -> None:
     """Test extracting image id from filename."""
     correct = 123456789
     filename = "_I123456789.nii"
