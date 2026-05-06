@@ -1,93 +1,90 @@
-.PHONY: docs
+.PHONY: help init check lint test test-all coverage docs servedocs clean clean-build clean-pyc clean-test clean-docs dist install release check-deps
 .DEFAULT_GOAL := help
+
+VENV_DIR := .venv
+PYTHON := $(VENV_DIR)/bin/python
+PIP := $(VENV_DIR)/bin/pip
+SYSTEM_PYTHON := python3
+
+BROWSER := $(PYTHON) -c
 
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
-
-try:
-	from urllib import pathname2url
-except:
-	from urllib.request import pathname2url
-
+from urllib.request import pathname2url
 webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
 endef
 export BROWSER_PYSCRIPT
 
 define PRINT_HELP_PYSCRIPT
 import re, sys
-
 for line in sys.stdin:
-	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
-	if match:
-		target, help = match.groups()
-		print("%-20s %s" % (target, help))
+    match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
+    if match:
+        print("%-20s %s" % match.groups())
 endef
 export PRINT_HELP_PYSCRIPT
 
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
-
 help:
-	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+	@$(SYSTEM_PYTHON) -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-test clean-build clean-pyc clean-docs ## remove all build, test, coverage, Python artifacts and documentation
+$(VENV_DIR):
+	$(SYSTEM_PYTHON) -m venv $(VENV_DIR)
+	$(PIP) install --upgrade pip
 
-clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+init: $(VENV_DIR) ## initialize environment
+	$(PIP) install -r requirements_dev.txt
+	$(PYTHON) -m pre_commit install
 
-clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
+check: $(VENV_DIR) ## run pre-commit checks
+	$(PYTHON) -m pre_commit run --all-files
 
-clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/
-	rm -f .coverage
-	rm -fr htmlcov/
-	rm -fr .pytest_cache
+lint: $(VENV_DIR) ## lint code
+	$(PYTHON) -m flake8 adnipy tests
 
-clean-docs: ## remove Sphinx documentation
-	rm -f docs/adnipy.rst
-	rm -f docs/modules.rst
-	$(MAKE) -C docs clean
+test: $(VENV_DIR) ## run tests
+	$(PYTHON) -m pytest
 
-lint: ## check style with flake8
-	flake8 adnipy tests
+test-all: $(VENV_DIR) ## run tox
+	$(PYTHON) -m tox
 
-test: ## run tests quickly with the default Python
-	py.test
+coverage: $(VENV_DIR) ## coverage report
+	$(PYTHON) -m coverage run --source adnipy -m pytest
+	$(PYTHON) -m coverage report -m
+	$(PYTHON) -m coverage html
+	$(PYTHON) -c "$$BROWSER_PYSCRIPT" htmlcov/index.html
 
-test-all: ## run tests on every Python version with tox
-	tox
-
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source adnipy -m pytest
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
-
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/adnipy.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ adnipy
+docs: ## build docs
+	sphinx-apidoc -o docs adnipy
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
+	$(PYTHON) -c "$$BROWSER_PYSCRIPT" docs/_build/html/index.html
 
-servedocs: docs ## compile the docs watching for changes
+servedocs: docs ## live docs
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
-release: dist ## package and upload a release
+clean: clean-build clean-pyc clean-test clean-docs ## full clean
+
+clean-build:
+	rm -rf build dist .eggs *.egg-info
+
+clean-pyc:
+	find . -name '*.pyc' -delete
+	find . -name '__pycache__' -delete
+
+clean-test:
+	rm -rf .tox .pytest_cache .coverage htmlcov
+
+clean-docs:
+	rm -f docs/adnipy.rst docs/modules.rst
+
+dist: $(VENV_DIR) clean ## build package
+	$(PYTHON) -m build
+
+install: $(VENV_DIR) ## install package locally
+	$(PIP) install .
+
+release: dist ## upload package
 	twine upload dist/*
 
-dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist_wheel
-	ls -l dist
-
-install: clean ## install the package to the active Python's site-packages
-	python setup.py install
+check-deps: $(VENV_DIR) ## SPEC0 dependency check
+	$(PYTHON) scripts/check_spec0.py
