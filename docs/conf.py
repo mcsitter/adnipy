@@ -27,7 +27,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-import sphinx_rtd_theme  # noqa: F401 pylint: disable=W0611
+import sphinx_rtd_theme  # noqa: F401
 
 import adnipy
 

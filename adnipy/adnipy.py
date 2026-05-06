@@ -2,12 +2,13 @@
 
 # Standard library imports
 import warnings
+from io import StringIO
 
 # Third party imports
 import pandas as pd
 
 
-def read_csv(file: str) -> pd.DataFrame:
+def read_csv(file: str | StringIO) -> pd.DataFrame:
     """Return a csv file as a pandas.DataFrame.
 
     Recognizes missing values used in the ADNI database.
@@ -32,16 +33,7 @@ def read_csv(file: str) -> pd.DataFrame:
     # empty values
     na_values = ["-1", "-4"]
 
-    # prevents UserWarnings on large files like ADNIMERGE
-    dtype = {
-        "ABETA": object,
-        "TAU": object,
-        "TAU_bl": object,
-        "PTAU": object,
-        "PTAU_bl": object,
-    }
-
-    return pd.read_csv(file, dtype=dtype, na_values=na_values)
+    return pd.read_csv(file, na_values=na_values)
 
 
 def timedelta(old: pd.DataFrame, new: pd.DataFrame) -> pd.Series:
@@ -100,7 +92,7 @@ def get_matching_images(left: pd.DataFrame, right: pd.DataFrame) -> pd.DataFrame
     def closest_date(subject: pd.DataFrame, index: tuple) -> pd.Timestamp:
         """Get closest date from list."""
         unique_dates = subject.index.unique()
-        return min(unique_dates, key=lambda x, index=index: abs(x - index[1]))
+        return min(unique_dates, key=lambda x, index=index: abs(x - index[1]))  # type: ignore[misc]
 
     for index in left.index:
         if index[0] in right_subjects:

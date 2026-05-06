@@ -282,7 +282,7 @@ class ADNI:
     def timepoints(
         self,
         second: Literal["first", "last"] = "first",
-    ) -> dict[str, pd.Series]:
+    ) -> dict[str, pd.DataFrame]:
         """Extract timepoints from a dataframe.
 
         Parameters

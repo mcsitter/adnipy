@@ -27,5 +27,9 @@ def image_id_from_filename(filename: str) -> int:
 
     """
     image_id_format = re.compile("_I([0-9]*).nii")
-    image_id = re.search(image_id_format, filename).group(1)
+    match = re.search(image_id_format, filename)
+    if match is None:
+        msg = f"Filename '{filename}' does not contain a valid image ID. "
+        raise ValueError(msg)
+    image_id = match.group(1)
     return int(image_id)
