@@ -28,3 +28,10 @@ repos:
         additional_dependencies:
           - pytest-stub
           - matplotlib
+  - repo: local
+    hooks:
+      - id: spec0-check
+        name: SPEC0 dependency check
+        entry: .venv/bin/python -u scripts/check_spec0.py
+        language: system
+        pass_filenames: false

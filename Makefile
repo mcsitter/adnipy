@@ -1,5 +1,6 @@
 .PHONY: help init check lint test test-all coverage docs servedocs clean clean-build clean-pyc clean-test clean-docs dist install release check-deps
 .DEFAULT_GOAL := help
+MAKEFLAGS += --no-print-directory
 
 VENV_DIR := .venv
 PYTHON := $(VENV_DIR)/bin/python
@@ -27,12 +28,14 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@$(SYSTEM_PYTHON) -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
+venv: $(VENV_DIR) ## create virtual environment
+
 $(VENV_DIR):
 	$(SYSTEM_PYTHON) -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
 
 init: $(VENV_DIR) ## initialize environment
-	$(PIP) install -r requirements_dev.txt
+	$(MAKE) install
 	$(PYTHON) -m pre_commit install
 
 check: $(VENV_DIR) ## run pre-commit checks
@@ -81,7 +84,7 @@ dist: $(VENV_DIR) clean ## build package
 	$(PYTHON) -m build
 
 install: $(VENV_DIR) ## install package locally
-	$(PIP) install .
+	$(PIP) install .[dev]
 
 release: dist ## upload package
 	twine upload dist/*

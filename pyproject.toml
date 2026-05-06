@@ -11,7 +11,7 @@ authors = [
 ]
 license = { file = "LICENSE" }
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 keywords = ["adnipy"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -19,12 +19,28 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
 ]
-dependencies = ["pandas>=2.0.0", "matplotlib>=3.9.0"]
+dependencies = ["pandas>=2.3.0", "matplotlib>=3.9.0"]
+[project.optional-dependencies]
+dev = [
+    "packaging",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "coverage",
+    "ruff",
+    "mypy",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "tox",
+    "build",
+    "twine",
+]
 
 [project.urls]
 Homepage = "https://github.com/mcsitter/adnipy"
