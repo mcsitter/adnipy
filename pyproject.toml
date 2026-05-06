@@ -7,14 +7,14 @@ name = "adnipy"
 version = "1.0.0"
 description = "Process ADNI study data with adnipy."
 authors = [
-    { name = "Maximilian Cosmo Sitter", email = "msitter@smail.uni-koeln.de" }
+    { name = "Maximilian Cosmo Sitter", email = "msitter@smail.uni-koeln.de" },
 ]
 license = { file = "LICENSE" }
 readme = "README.rst"
 requires-python = ">=3.10"
 keywords = ["adnipy"]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
@@ -22,12 +22,9 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13"
+    "Programming Language :: Python :: 3.13",
 ]
-dependencies = [
-    "pandas>=2.0.0",
-    "matplotlib>=3.0.0"
-]
+dependencies = ["pandas>=2.0.0", "matplotlib>=3.0.0"]
 
 [project.urls]
 Homepage = "https://github.com/mcsitter/adnipy"
