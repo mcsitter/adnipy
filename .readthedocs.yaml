@@ -24,4 +24,6 @@ formats:
 python:
   install:
     - method: pip
-      path: .[dev]
+      path: .
+      extra_requirements:
+        - dev
