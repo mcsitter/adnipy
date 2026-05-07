@@ -45,7 +45,16 @@ Once you have a copy of the source, you can install it with:
 
 .. code-block:: console
 
-    $ python setup.py install
+    # For a normal install, use pip
+    $ pip install .
+
+    # For development, the project provides Makefile targets that create
+    # a virtual environment and install development dependencies. This is
+    # the recommended workflow for contributors:
+    $ make init
+
+    # Alternatively install in editable mode with development extras:
+    $ pip install -e .[dev]
 
 
 .. _Github repo: https://github.com/mcsitter/adnipy

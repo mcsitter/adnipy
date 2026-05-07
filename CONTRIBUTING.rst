@@ -64,11 +64,17 @@ Ready to contribute? Here's how to set up `adnipy` for local development.
 
     $ git clone git@github.com:your_name_here/adnipy.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Set up your local development environment. The project provides convenient Makefile
+   targets that create a virtual environment and install development
+   dependencies. This is the recommended workflow::
 
-    $ mkvirtualenv adnipy
-    $ cd adnipy/
-    $ python setup.py develop
+    $ make init
+
+   If you prefer to do this manually, you can create a virtualenv and install
+   the package in editable mode with development extras::
+
+    $ python -m venv .venv
+    $ .venv/bin/pip install -e .[dev]
 
 4. Create a branch for local development::
 
@@ -76,14 +82,15 @@ Ready to contribute? Here's how to set up `adnipy` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the
-   tests, including testing other Python versions with tox::
+5. When you're done making changes, check that your changes pass linting and the
+    tests. Use the Makefile targets provided by the project::
 
-    $ flake8 adnipy tests
-    $ python setup.py test or py.test
-    $ tox
+     $ make lint        # run flake8
+     $ make test        # run pytest
+     $ make test-all    # run tox
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+    The `make init` target installs development dependencies (including
+    flake8 and tox), so you normally don't need to install them separately.
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -111,8 +118,7 @@ Tips
 
 To run a subset of tests::
 
-
-    $ $ py.test tests.test_adnipy
+    $ pytest tests/test_adnipy.py
 
 Deploying
 ---------
