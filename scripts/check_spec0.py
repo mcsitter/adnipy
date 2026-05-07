@@ -68,6 +68,8 @@ def fetch_python_releases() -> dict[Version, datetime]:
     for entry in raw_data:
         if "install" in entry["name"].lower():
             continue
+        if entry["pre_release"]:
+            continue
         parsed_version: Version = Version(entry["name"].split()[1])
         if parsed_version.major == 2 or parsed_version.micro != 0:  # noqa: PLR2004
             continue
