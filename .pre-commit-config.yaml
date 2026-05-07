@@ -32,6 +32,8 @@ repos:
     hooks:
       - id: spec0-check
         name: SPEC0 dependency check
-        entry: .venv/bin/python -u scripts/check_spec0.py
-        language: system
+        entry: python -u scripts/check_spec0.py
+        language: python
+        additional_dependencies:
+          - packaging
         pass_filenames: false
