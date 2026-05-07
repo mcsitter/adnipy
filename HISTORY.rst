@@ -19,3 +19,9 @@ History
 
 * Support for Python 3.10 and later.
 * Integration with pandas 2.0 and later.
+
+1.0.1 (2026-05-07)
+------------------
+
+* Updated Python requirement to >=3.12 (removed support for Python 3.10 and 3.11).
+* Enhanced type hints across the codebase.

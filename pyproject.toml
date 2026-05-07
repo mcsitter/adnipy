@@ -75,8 +75,13 @@ allow_dirty = true
 commit = true
 message = "Bump version: {current_version} → {new_version}"
 moveable_tags = []
-commit_args = "y"
+commit_args = ""
 setup_hooks = []
 pre_commit_hooks = []
 post_commit_hooks = []
 allow_shell_hooks = true
+
+[[tool.bumpversion.files]]
+filename = "adnipy/__init__.py"
+search = "__version__ = \"{current_version}\""
+replace = "__version__ = \"{new_version}\""
