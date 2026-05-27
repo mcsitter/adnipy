@@ -1,0 +1,19 @@
+name: Update SPEC 0 dependencies
+
+on:
+  schedule:
+    # Day 3 of each quarter. Allows one day buffer after the quarterly schedule release on day 1
+    - cron: "0 0 3 1,4,7,10 *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: scientific-python/spec0-action@v1
+        with:
+          target_branch: master
