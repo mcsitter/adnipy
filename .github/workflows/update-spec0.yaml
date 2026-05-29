@@ -14,6 +14,6 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: scientific-python/spec0-action@v1
+      - uses: scientific-python/spec0-action@v1.3
         with:
           target_branch: master
