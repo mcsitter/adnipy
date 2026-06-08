@@ -2,6 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   skip: [spec0-check]
+  autoupdate_schedule: monthly
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
