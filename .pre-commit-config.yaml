@@ -15,11 +15,11 @@ repos:
       - id: check-case-conflict
       - id: requirements-txt-fixer
   - repo: https://github.com/mirrors-prettier/mirrors-prettier
-    rev: v3.8.3
+    rev: v3.9.4
     hooks:
       - id: prettier
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.16
+    rev: v0.15.20
     hooks:
       - id: ruff-format
       - id: ruff-check
