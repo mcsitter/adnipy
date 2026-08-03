@@ -15,17 +15,17 @@ repos:
       - id: check-case-conflict
       - id: requirements-txt-fixer
   - repo: https://github.com/mirrors-prettier/mirrors-prettier
-    rev: v3.9.4
+    rev: v3.9.6
     hooks:
       - id: prettier
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.20
+    rev: v0.16.1
     hooks:
       - id: ruff-format
       - id: ruff-check
         args: [--fix, --select=ALL]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v2.1.0
+    rev: v2.3.0
     hooks:
       - id: mypy
         args: [--install-types, --non-interactive, --exclude=docs/conf.py]
