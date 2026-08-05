@@ -1,0 +1,25 @@
+{
+  "name": "adnipy",
+  "image": "mcr.microsoft.com/devcontainers/python:3-3.12",
+  "features": {},
+  "mounts": [
+    "source=${localEnv:HOME}/.cache/pip,target=/home/vscode/.cache/pip,type=bind",
+    "source=${localEnv:HOME}/.cache/prek,target=/home/vscode/.cache/prek,type=bind",
+    "source=${localEnv:HOME}/.cache/uv,target=/home/vscode/.cache/uv,type=bind"
+  ],
+  "remoteUser": "vscode",
+  "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/.cache",
+  "postStartCommand": "make sync",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "charliermarsh.ruff",
+        "GitHub.copilot-chat",
+        "ms-azuretools.vscode-docker",
+        "ms-python.python",
+        "tamasfe.even-better-toml"
+      ]
+    }
+  }
+}

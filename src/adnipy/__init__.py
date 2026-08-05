@@ -1,4 +1,4 @@
-"""Top-level package for adnipy."""
+"""Process ADNI study data with ADNIpy."""
 
 __author__ = """Maximilian Cosmo Sitter"""
 __email__ = "msitter@smail.uni-koeln.de"
@@ -13,7 +13,3 @@ from .adni import ADNI
 from .adnipy import get_matching_images, read_csv, timedelta
 
 del plt, pd
-
-
-# module level doc-string
-__doc__ = """Process ADNI study data with adnipy."""

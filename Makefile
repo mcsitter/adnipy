@@ -1,93 +1,229 @@
-.PHONY: help init check lint test test-all coverage docs servedocs clean clean-build clean-pyc clean-test clean-docs dist install release check-deps
 .DEFAULT_GOAL := help
 MAKEFLAGS += --no-print-directory
+.PHONY: check clean clean-generated clean-venv git help init sync update-from-template update-github update-pre-commit-hooks
 
+UV ?= uv
 VENV_DIR := .venv
-PYTHON := $(VENV_DIR)/bin/python
-PIP := $(VENV_DIR)/bin/pip
-SYSTEM_PYTHON := python3
 
-BROWSER := $(PYTHON) -c
-
-define BROWSER_PYSCRIPT
-import os, webbrowser, sys
-from urllib.request import pathname2url
-webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
-endef
-export BROWSER_PYSCRIPT
-
-define PRINT_HELP_PYSCRIPT
-import re, sys
-for line in sys.stdin:
-    match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
-    if match:
-        print("%-20s %s" % match.groups())
-endef
-export PRINT_HELP_PYSCRIPT
-
+## Show available commands.
 help:
-	@$(SYSTEM_PYTHON) -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+	@echo ""
+	@echo "ADNIpy"
+	@echo ""
+	@echo "Usage:"
+	@echo "  make <target>"
+	@echo ""
+	@echo "Typical workflow:"
+	@echo "  make init                     Set up the project and development environment"
+	@echo "  make check                    Format and run quality checks"
+	@echo ""
+	@echo "Maintenance:"
+	@echo "  make update-from-template     Update files from the project template"
+	@echo "  make update-github            Update GitHub repository metadata"
+	@echo "  make update-pre-commit-hooks  Update pre-commit hook versions"
+	@echo ""
+	@echo "All targets:"
+	@awk '/^## / {desc=$$0; sub(/^## /,"",desc)} /^[a-zA-Z_-]+:/ {target=$$1; sub(/:$$/,"",target); printf "  %-28s %s\n", target, desc; desc=""}' $(MAKEFILE_LIST) | sort
+	@echo ""
 
-venv: $(VENV_DIR) ## create virtual environment
+## Synchronize dependencies and install development tools.
+sync: pyproject.toml
+	$(UV) sync --group dev
+	$(UV) run prek install
 
-$(VENV_DIR):
-	$(SYSTEM_PYTHON) -m venv $(VENV_DIR)
-	$(PIP) install --upgrade pip
+## Remove the virtual environment.
+clean-venv:
+	@if [ -d "$(VENV_DIR)" ]; then \
+		rm -rf "$(VENV_DIR)"; \
+	else \
+		echo "Virtual environment does not exist."; \
+	fi
 
-init: $(VENV_DIR) ## initialize environment
-	$(MAKE) install
-	$(PYTHON) -m pre_commit install
+## Run code quality checks.
+check:
+	@echo "Formatting with ruff..."
+	@$(UV) run prek run ruff-format --all-files >/dev/null || echo "ruff-format updated files"
+	$(UV) run prek run --all-files
 
-check: $(VENV_DIR) ## run pre-commit checks
-	$(PYTHON) -m pre_commit run --all-files
+## Update project files from the template.
+update-from-template:
+	@if ! git diff --quiet || ! git diff --cached --quiet; then \
+		echo "Git tree is not clean. Commit or stash changes first."; \
+		exit 1; \
+	fi
+	$(UV) run copier update --defaults
+	@if ! git diff --quiet; then \
+		git diff --check; \
+		if [ $$? -eq 0 ]; then \
+			git add -A && git commit -m "chore: update from template"; \
+		else \
+			echo "Diff contains conflicts."; \
+			exit 1; \
+		fi; \
+	fi
 
-lint: $(VENV_DIR) ## lint code
-	$(PYTHON) -m flake8 adnipy tests
+## Update pre-commit hook versions, validate, and commit changes.
+update-pre-commit-hooks:
+	@if ! git diff --quiet || ! git diff --cached --quiet; then \
+		echo "Git tree is not clean. Commit or stash changes first."; \
+		exit 1; \
+		fi; \
+	$(UV) run prek autoupdate; \
+	if git diff --quiet -- .pre-commit-config.yaml; then \
+		echo "No pre-commit updates available."; \
+		exit 0; \
+	fi; \
+	echo ""; \
+	echo "Changes:"; \
+	git diff -- .pre-commit-config.yaml; \
+	echo ""; \
+	echo "Running checks..."; \
+	$(MAKE) check; \
+	read -p "Commit these changes? [y/N] " ANSWER; \
+	if [ "$$ANSWER" = "y" ] || [ "$$ANSWER" = "Y" ]; then \
+		git add .pre-commit-config.yaml && \
+		git commit -m "chore: update pre-commit hooks"; \
+	else \
+		echo "Aborted."; \
+	fi
 
-test: $(VENV_DIR) ## run tests
-	$(PYTHON) -m pytest
+## Remove generated files and untracked files (keeps the .venv folder and .env files).
+clean: clean-generated
+	@FILES="$$(git clean -xdn \
+		-e $(VENV_DIR)/ \
+		-e '*.py' \
+		-e .env* )"; \
+	if [ -z "$$FILES" ]; then \
+		echo "Nothing else to clean."; \
+	else \
+		printf "%s\n" "$$FILES"; \
+		read -p "Delete these files? [y/N] " ANSWER; \
+		if [ "$$ANSWER" = "y" ] || [ "$$ANSWER" = "Y" ]; then \
+			git clean -xd -f \
+				-e $(VENV_DIR)/ \
+				-e '*.py' \
+				-e .env* ; \
+		fi \
+	fi
 
-test-all: $(VENV_DIR) ## run tox
-	$(PYTHON) -m tox
+## Remove generated Python artifacts.
+clean-generated:
+	@find . -type d -name "*.egg-info" -prune -exec rm -rf {} +
+	@find . -type d -name "__pycache__" -prune -exec rm -rf {} +
+	@find . -type d -name ".import_linter_cache" -prune -exec rm -rf {} +
+	@rm -rf \
+		build \
+		dist \
+		.mypy_cache \
+		.pytest_cache \
+		.ruff_cache
 
-coverage: $(VENV_DIR) ## coverage report
-	$(PYTHON) -m coverage run --source adnipy -m pytest
-	$(PYTHON) -m coverage report -m
-	$(PYTHON) -m coverage html
-	$(PYTHON) -c "$$BROWSER_PYSCRIPT" htmlcov/index.html
+## Initialize a Git repository.
+git:
+	@if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then \
+		echo "Git repository already exists."; \
+	else \
+		echo "Initializing git repository (main branch)..."; \
+		git init -b main; \
+	fi
 
-docs: ## build docs
-	sphinx-apidoc -o docs adnipy
+## Update GitHub repository metadata from project configuration.
+update-github:
+	@if command -v gh >/dev/null 2>&1; then \
+		if ! gh auth status >/dev/null 2>&1; then \
+			echo "GitHub CLI is not authenticated; skipping GitHub update."; \
+		elif [ ! -f .copier-answers.yml ]; then \
+			echo ".copier-answers.yml not found; skipping GitHub update."; \
+		else \
+			name="$$(awk '/^project_name:/ {sub(/^project_name: /, ""); print}' .copier-answers.yml | tr '[:upper:]' '[:lower:]' | tr ' _' '--')"; \
+			owner="$$(gh api user --jq '.login')"; \
+			repo="$$owner/$$name"; \
+			description="$$(awk '/^project_description:/ {sub(/^project_description:/, ""); print}' .copier-answers.yml)"; \
+			if gh repo view "$$repo" >/dev/null 2>&1; then \
+				echo "Updating GitHub repository metadata..."; \
+				gh repo edit "$$repo" \
+					--description "$$description"; \
+			else \
+				echo "Creating GitHub repository..."; \
+				gh repo create "$$repo" \
+					--private \
+					--description "$$description" \
+					--source . \
+					--remote origin; \
+			fi; \
+		fi; \
+	else \
+		echo "GitHub CLI (gh) not available; skipping GitHub update."; \
+	fi
+
+## Initialize the project, install dependencies, run checks, and create the initial commit.
+init:
+	@$(MAKE) git
+	@$(MAKE) sync
+	@$(MAKE) check
+	@$(MAKE) update-github
+	@INITIAL_COMMIT=0; \
+	if ! git rev-parse --verify HEAD >/dev/null 2>&1; then \
+		git add -A; \
+		if git diff --cached --quiet; then \
+			echo "Nothing to commit."; \
+		else \
+			echo ""; \
+			echo "Initial commit:"; \
+			git diff --cached --stat; \
+			echo ""; \
+			read -p "Commit initial project? [y/N] " ANSWER; \
+			if [ "$$ANSWER" = "y" ] || [ "$$ANSWER" = "Y" ]; then \
+				git commit -m "chore: initialize project"; \
+				INITIAL_COMMIT=1; \
+			else \
+				echo "Initial commit skipped."; \
+			fi; \
+		fi; \
+	fi; \
+	if [ "$$INITIAL_COMMIT" = "1" ] && git remote get-url origin >/dev/null 2>&1; then \
+		echo "Pushing initial commit..."; \
+		git push -u origin "$$(git branch --show-current)"; \
+	fi
+
+.PHONY: check-deps coverage dist docs install release servedocs test tox
+
+## Run unit tests.
+test:
+	$(UV) run pytest -v
+
+## Run tox test environments.
+tox:
+	$(UV) run tox
+
+## Run tests with coverage.
+coverage:
+	$(UV) run coverage run --source adnipy -m pytest
+	$(UV) run coverage report -m
+	$(UV) run coverage html
+
+## Build documentation.
+docs:
+	sphinx-apidoc -o docs src/adnipy
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-	$(PYTHON) -c "$$BROWSER_PYSCRIPT" docs/_build/html/index.html
 
-servedocs: docs ## live docs
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
+## Serve documentation locally.
+servedocs:
+	$(UV) run sphinx-autobuild docs docs/_build/html
 
-clean: clean-build clean-pyc clean-test clean-docs ## full clean
+## Build package.
+dist: clean
+	$(UV) run python -m build
 
-clean-build:
-	rm -rf build dist .eggs *.egg-info
+## Install package locally.
+install:
+	$(UV) sync --group dev
 
-clean-pyc:
-	find . -name '*.pyc' -delete
-	find . -name '__pycache__' -delete
+## Upload package release.
+release: dist
+	$(UV) run twine upload dist/*
 
-clean-test:
-	rm -rf .tox .pytest_cache .coverage htmlcov
-
-clean-docs:
-	rm -f docs/adnipy.rst docs/modules.rst
-
-dist: $(VENV_DIR) clean ## build package
-	$(PYTHON) -m build
-
-install: $(VENV_DIR) ## install package locally
-	$(PIP) install .[dev]
-
-release: dist ## upload package
-	twine upload dist/*
-
-check-deps: $(VENV_DIR) ## SPEC0 dependency check
-	$(PYTHON) scripts/check_spec0.py
+## Check dependency compliance.
+check-deps:
+	$(UV) run python scripts/check_spec0.py

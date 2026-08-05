@@ -77,7 +77,7 @@ def test_calculating_timedelta_of_scandate(
         test_timepoints["Timepoint 2"],
     )
     assert timedeltas.dtypes == correct_dtype
-    assert timedeltas.iloc[1] == np.timedelta64(0)
+    assert timedeltas.iloc[1] == np.timedelta64(0, "us")
 
 
 def test_read_csv(test_df: pd.DataFrame, test_file: io.StringIO) -> None:
