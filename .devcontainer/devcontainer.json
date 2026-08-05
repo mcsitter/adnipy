@@ -17,6 +17,7 @@
         "charliermarsh.ruff",
         "GitHub.copilot-chat",
         "ms-azuretools.vscode-docker",
+        "ms-python.mypy-type-checker",
         "ms-python.python",
         "tamasfe.even-better-toml"
       ]

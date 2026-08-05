@@ -6,5 +6,5 @@ project_description: Process ADNI study data with ADNIpy.
 project_name: ADNIpy
 project_type: package
 python_version: '3.12'
-typing: false
+typing: true
 with_conventional_commits: true

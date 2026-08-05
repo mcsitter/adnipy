@@ -45,6 +45,12 @@ repos:
         args:
           - "--indent-style=space"
 
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v2.3.0
+    hooks:
+      - id: mypy
+        args: [--ignore-missing-imports]
+
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v4.17.0
     hooks:

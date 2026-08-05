@@ -32,6 +32,7 @@ dev = [
   "build",
   "bump-my-version",
   "copier",
+  "mypy",
   "packaging",
   "prek",
   "pytest",
@@ -80,6 +81,9 @@ ignore = [
 
 [tool.ruff.lint.flake8-type-checking]
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+
+[tool.mypy]
+ignore_missing_imports = true
 
 [tool.commitizen]
 name = "cz_conventional_commits"
