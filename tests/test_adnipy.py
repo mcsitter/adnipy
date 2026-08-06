@@ -7,7 +7,6 @@ import io
 from io import StringIO
 
 # Third party imports
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -63,6 +62,9 @@ def test_timepoints(test_df: pd.DataFrame) -> dict[str, pd.DataFrame]:
     }
 
 
+@pytest.mark.filterwarnings(
+    "ignore:The 'generic' unit for NumPy timedelta is deprecated:DeprecationWarning"
+)
 def test_calculating_timedelta_of_scandate(
     test_timepoints: dict[str, pd.DataFrame],
 ) -> None:
@@ -71,13 +73,14 @@ def test_calculating_timedelta_of_scandate(
         timepoint_df = dataframe.rename(columns={"Acq Date": "SCANDATE"})
         timepoint_df["SCANDATE"] = pd.to_datetime(timepoint_df["SCANDATE"])
         test_timepoints[timepoint] = timepoint_df
-    correct_dtype = np.dtype("<m8[us]")
     timedeltas = adnipy.timedelta(
         test_timepoints["Timepoint 1"],
         test_timepoints["Timepoint 2"],
     )
-    assert timedeltas.dtypes == correct_dtype
-    assert timedeltas.iloc[1] == np.timedelta64(0, "us")
+    assert timedeltas.iloc[0] == pd.Timedelta("-365 days")
+    assert timedeltas.iloc[1] == pd.Timedelta(0)
+    assert pd.isna(timedeltas.iloc[2])
+    assert pd.isna(timedeltas.iloc[3])
 
 
 def test_read_csv(test_df: pd.DataFrame, test_file: io.StringIO) -> None:
