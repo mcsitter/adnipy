@@ -21,7 +21,7 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-  "matplotlib>=3.10.0",
+  "matplotlib>=3.11.1",
   "pandas>=2.3.0",
 ]
 
