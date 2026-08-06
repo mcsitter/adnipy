@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: ad7264f
+_commit: 837e008
 _src_path: gh:mcsitter/project_template
 pre_commit_tool: prek
 project_description: Process ADNI study data with ADNIpy.

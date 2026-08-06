@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 MAKEFLAGS += --no-print-directory
-.PHONY: check clean clean-generated clean-venv git help init sync update-from-template update-github update-pre-commit-hooks
+.PHONY: check clean clean-generated clean-venv git help init run sync test-template update-from-template update-github update-pre-commit-hooks vscode-extensions
 
 UV ?= uv
 VENV_DIR := .venv
@@ -57,7 +57,8 @@ update-from-template:
 		if [ $$? -eq 0 ]; then \
 			git add -A && git commit -m "chore: update from template"; \
 		else \
-			echo "Diff contains conflicts."; \
+			echo "Resolve merge conflicts, then commit with:"; \
+			echo "  git add -A && git commit -m \"chore: update from template\""; \
 			exit 1; \
 		fi; \
 	fi
@@ -187,6 +188,40 @@ init:
 	if [ "$$INITIAL_COMMIT" = "1" ] && git remote get-url origin >/dev/null 2>&1; then \
 		echo "Pushing initial commit..."; \
 		git push -u origin "$$(git branch --show-current)"; \
+	fi
+	$(MAKE) vscode-extensions
+
+## Install missing VS Code extensions.
+vscode-extensions:
+	@if [ "$${TERM_PROGRAM:-}" = "vscode" ]; then \
+		installed="$$(code --list-extensions)"; \
+		missing="$$(jq -r '.recommendations[]' .vscode/extensions.json | while read -r extension; do \
+			if ! printf '%s\n' "$$installed" | grep -ixq "$$extension"; then \
+				echo "$$extension"; \
+			fi; \
+		done)"; \
+		if [ -z "$$missing" ]; then \
+			echo "All recommended VS Code extensions are already installed"; \
+			exit 0; \
+		fi; \
+		echo "Missing VS Code extensions:"; \
+		printf '%s\n' "$$missing"; \
+		if [ -t 0 ]; then \
+			printf "Install missing extensions? [y/N] "; \
+			read -r answer; \
+			case "$$answer" in \
+				y|Y|yes|YES) ;; \
+				*) echo "Skipping VS Code extensions"; exit 0 ;; \
+			esac; \
+		else \
+			echo "Running non-interactively, installing extensions"; \
+		fi; \
+		printf '%s\n' "$$missing" | while read -r extension; do \
+			echo "Installing VS Code extension: $$extension"; \
+			code --install-extension "$$extension"; \
+		done; \
+	else \
+		echo "Not running inside VS Code, skipping extensions"; \
 	fi
 
 .PHONY: check-deps coverage dist docs install release servedocs test tox
