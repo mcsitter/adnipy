@@ -116,7 +116,10 @@ clean-generated:
 		dist \
 		.mypy_cache \
 		.pytest_cache \
-		.ruff_cache
+		.ruff_cache \
+		.coverage \
+		.tox \
+		docs/_build
 
 ## Initialize a Git repository.
 git:
