@@ -85,6 +85,9 @@ ignore = [
 [tool.ruff.lint.flake8-type-checking]
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
 [tool.mypy]
 ignore_missing_imports = true
 
