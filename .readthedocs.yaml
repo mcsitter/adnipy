@@ -23,7 +23,7 @@ formats:
 # Optionally declare the Python requirements required to build your docs
 python:
   install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - dev
+    - method: uv
+      command: sync
+      groups:
+        - docs

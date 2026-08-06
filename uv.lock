@@ -39,6 +39,11 @@ dev = [
     { name = "twine" },
     { name = "watchdog" },
 ]
+docs = [
+    { name = "sphinx" },
+    { name = "sphinx-autobuild" },
+    { name = "sphinx-rtd-theme" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -62,6 +67,11 @@ dev = [
     { name = "tox" },
     { name = "twine" },
     { name = "watchdog" },
+]
+docs = [
+    { name = "sphinx" },
+    { name = "sphinx-autobuild" },
+    { name = "sphinx-rtd-theme" },
 ]
 types = []
 

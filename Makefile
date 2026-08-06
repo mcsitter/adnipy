@@ -204,7 +204,7 @@ coverage:
 
 ## Build documentation.
 docs:
-	sphinx-apidoc -o docs src/adnipy
+	$(UV) run sphinx-apidoc -o docs src/adnipy
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 

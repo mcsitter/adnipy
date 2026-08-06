@@ -26,8 +26,14 @@ dependencies = [
 ]
 
 [dependency-groups]
+docs = [
+  "sphinx",
+  "sphinx-autobuild",
+  "sphinx-rtd-theme",
+]
 types = []
 dev = [
+  { include-group = "docs" },
   { include-group = "types" },
   "build",
   "bump-my-version",
@@ -37,9 +43,6 @@ dev = [
   "prek",
   "pytest",
   "pytest-coverage",
-  "sphinx",
-  "sphinx-autobuild",
-  "sphinx-rtd-theme",
   "tox",
   "twine",
   "watchdog",
