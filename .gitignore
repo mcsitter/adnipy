@@ -229,3 +229,5 @@ pyrightconfig.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/data,git,jupyternotebooks,python,visualstudiocode
+
+uv.lock
