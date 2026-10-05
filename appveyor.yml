@@ -6,7 +6,6 @@ environment:
     matrix:
         - TOXENV: py313-pandas2
         - TOXENV: py314-pandas2
-        - TOXENV: py315-pandas2
         - TOXENV: doc8
 
 build: off
