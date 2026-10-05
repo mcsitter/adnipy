@@ -7,7 +7,7 @@ authors = [
 ]
 license = { file = "LICENSE" }
 readme = "README.rst"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 keywords = ["adnipy"]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -16,12 +16,11 @@ classifiers = [
   "Natural Language :: English",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-  "matplotlib>=3.10.0",
+  "matplotlib>=3.11.0",
   "pandas>=2.3.0",
 ]
 

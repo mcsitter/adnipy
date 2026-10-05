@@ -4,7 +4,6 @@ image:
 
 environment:
     matrix:
-        - TOXENV: py312-pandas2
         - TOXENV: py313-pandas2
         - TOXENV: py314-pandas2
         - TOXENV: doc8
