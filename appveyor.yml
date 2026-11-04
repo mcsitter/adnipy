@@ -1,18 +1,18 @@
 # appveyor.yml
 image:
-    - Visual Studio 2019
+  - Visual Studio 2019
 
 environment:
-    matrix:
-        - TOXENV: py313-pandas2
-        - TOXENV: py314-pandas2
-        - TOXENV: doc8
+  matrix:
+    - TOXENV: py313-pandas2
+    - TOXENV: py314-pandas2
+    - TOXENV: doc8
 
 build: off
 
 install:
-    - py -m pip install --upgrade pip
-    - py -m pip install tox
+  - py -m pip install --upgrade pip
+  - py -m pip install tox
 
 test_script:
-    - py -m tox
+  - py -m tox

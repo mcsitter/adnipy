@@ -5,6 +5,6 @@ pre_commit_tool: prek
 project_description: Process ADNI study data with ADNIpy.
 project_name: ADNIpy
 project_type: package
-python_version: '3.12'
+python_version: "3.12"
 typing: true
 with_conventional_commits: true
